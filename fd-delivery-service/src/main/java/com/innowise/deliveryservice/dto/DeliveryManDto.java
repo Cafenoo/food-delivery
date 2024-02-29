@@ -9,4 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryManDto {}
+public class DeliveryManDto {
+
+  private String address;
+}
