@@ -1,6 +1,6 @@
 # How to run
 
-**Open terminal/cmd in project root directory**
+#### Open terminal/cmd in project root directory
 
 ### Using docker
 
@@ -8,7 +8,11 @@
 docker-compose up
 ```
 
-### Running locally:
+### Running locally
+
+#### Prerequisites
+- Gradle 8.5
+- Java 17
 
 You still need docker 
 ```
