@@ -29,5 +29,10 @@ gradle fd-order-service:bootRun
 
 ### Common URLs
 
-Eureka: **[http://localhost:8000](http://localhost:8000)** \
+Discovery Service - Eureka: **[http://localhost:8000](http://localhost:8000)** \
+Customer Service: **[http://localhost:8001](http://localhost:8001)** \
+Restaurant Service: **[http://localhost:8002](http://localhost:8002)** \
+Delivery Service: **[http://localhost:8003](http://localhost:8003)** \
+Order Service: **[http://localhost:8004](http://localhost:8004)** 
+
 Swagger: **`http://<service-name>:<port>/swagger-ui/index.html`**
