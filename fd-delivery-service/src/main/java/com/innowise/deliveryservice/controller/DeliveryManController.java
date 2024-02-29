@@ -47,7 +47,7 @@ public class DeliveryManController {
   @PostMapping
   public ResponseEntity<Void> createDeliveryMan(@RequestBody DeliveryManDto DeliveryManDto) {
     DeliveryMan deliveryMan = deliveryManService.createDeliveryMan(DeliveryManDto);
-    String location = format("/customer/{0}", deliveryMan.getId());
+    String location = format("/deliveries/{0}", deliveryMan.getId());
     URI locationUri = URI.create(location);
     return created(locationUri).build();
   }
