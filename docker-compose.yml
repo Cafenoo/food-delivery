@@ -2,13 +2,25 @@ version: "3"
 
 services:
 
+  config-service:
+    container_name: "config-service"
+    build: "./fd-config-service"
+    ports:
+      - "7999:7999"
+    networks:
+      - "food-delivery"
+
   discovery-service:
     container_name: "discovery-service"
     build: "./fd-discovery-service"
     ports:
       - "8000:8000"
     networks:
-      - food-delivery
+      - "food-delivery"
+    environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
+    depends_on:
+      - config-service
 
   customer-service:
     container_name: "customer-service"
@@ -18,12 +30,14 @@ services:
     networks:
       - "food-delivery"
     environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://customer-service-database:5432/customer-service"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres"
     depends_on:
       - customer-service-database
+      - config-service
       - discovery-service
 
   customer-service-database:
@@ -48,12 +62,14 @@ services:
     networks:
       - "food-delivery"
     environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://restaurant-service-database:5432/restaurant-service"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres"
     depends_on:
       - restaurant-service-database
+      - config-service
       - discovery-service
 
   restaurant-service-database:
@@ -78,12 +94,14 @@ services:
     networks:
       - "food-delivery"
     environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
       SPRING_DATASOURCE_URL: "jdbc:postgresql://delivery-service-database:5432/delivery-service"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres"
     depends_on:
       - delivery-service-database
+      - config-service
       - discovery-service
 
   delivery-service-database:
@@ -108,6 +126,7 @@ services:
     networks:
       - "food-delivery"
     environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
       SPRING_DATA_MONGODB_USERNAME: "admin"
       SPRING_DATA_MONGODB_PASSWORD: "root"
@@ -117,6 +136,7 @@ services:
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: "admin"
     depends_on:
       - order-service-database
+      - config-service
       - discovery-service
 
   order-service-database:
@@ -132,6 +152,7 @@ services:
       MONGO_INITDB_DATABASE: "order-service"
     volumes:
       - order-service-database:/data/db
+      - order-service-database:/data/configdb
 
 networks:
   food-delivery:

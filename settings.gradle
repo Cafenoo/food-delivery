@@ -1,5 +1,6 @@
 rootProject.name = 'food-delivery-parent'
 
+include 'fd-config-service'
 include 'fd-discovery-service'
 include 'fd-customer-service'
 include 'fd-restaurant-service'

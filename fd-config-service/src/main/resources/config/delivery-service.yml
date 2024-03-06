@@ -1,0 +1,22 @@
+server:
+  port: 8003
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka
+
+spring:
+  application:
+    name: "delivery-service"
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    username: postgres
+    password: postgres
+    url: "jdbc:postgresql://localhost:5003/delivery-service"
