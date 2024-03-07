@@ -22,6 +22,20 @@ services:
     depends_on:
       - config-service
 
+  gateway-service:
+    container_name: "gateway-service"
+    build: "./fd-gateway-service"
+    ports:
+      - "7998:7998"
+    networks:
+      - "food-delivery"
+    environment:
+      CONFIG_SERVER_URI: "http://config-service:7999"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
+    depends_on:
+      - config-service
+      - discovery-service
+
   customer-service:
     container_name: "customer-service"
     build: "./fd-customer-service"
