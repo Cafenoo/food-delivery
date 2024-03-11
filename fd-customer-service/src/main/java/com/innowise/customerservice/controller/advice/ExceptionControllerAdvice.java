@@ -1,7 +1,8 @@
 package com.innowise.customerservice.controller.advice;
 
-import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.customerservice.exception.GatewayNotProcessedException;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +20,6 @@ public class ExceptionControllerAdvice {
 
   @ExceptionHandler(GatewayNotProcessedException.class)
   public ResponseEntity<Void> handleGatewayNotProcessedException() {
-    return badRequest().build();
+    return status(BAD_GATEWAY.value()).build();
   }
 }

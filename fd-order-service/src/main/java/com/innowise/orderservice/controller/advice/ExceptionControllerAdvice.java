@@ -1,10 +1,11 @@
 package com.innowise.orderservice.controller.advice;
 
-import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.ResponseEntity.notFound;
+import static org.springframework.http.ResponseEntity.status;
 
-import java.util.NoSuchElementException;
 import com.innowise.orderservice.exception.GatewayNotProcessedException;
+import java.util.NoSuchElementException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,6 @@ public class ExceptionControllerAdvice {
 
   @ExceptionHandler(GatewayNotProcessedException.class)
   public ResponseEntity<Void> handleGatewayNotProcessedException() {
-    return badRequest().build();
+    return status(BAD_GATEWAY.value()).build();
   }
 }

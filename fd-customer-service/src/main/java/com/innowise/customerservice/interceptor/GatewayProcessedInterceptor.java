@@ -1,12 +1,12 @@
 package com.innowise.customerservice.interceptor;
 
+import static java.util.Objects.isNull;
+
 import com.innowise.customerservice.exception.GatewayNotProcessedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import static java.util.Objects.isNull;
 
 @Component
 public class GatewayProcessedInterceptor implements HandlerInterceptor {
