@@ -1,14 +1,13 @@
 package com.innowise.customerservice.controller;
 
-import static java.text.MessageFormat.format;
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.customerservice.dto.CustomerDto;
 import com.innowise.customerservice.model.Customer;
 import com.innowise.customerservice.service.CustomerService;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,10 +33,9 @@ public class CustomerController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> createCustomer(@RequestBody CustomerDto customerDto) {
+  public ResponseEntity<Customer> createCustomer(@RequestBody CustomerDto customerDto) {
     Customer customer = customerService.createCustomer(customerDto);
-    String location = format("/customer/{0}", customer.getId());
-    return created(URI.create(location)).build();
+    return status(CREATED.value()).body(customer);
   }
 
   @PutMapping("/{id}")
@@ -49,7 +47,7 @@ public class CustomerController {
   }
 
   @DeleteMapping("/{id}")
-  private ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
     customerService.deleteCustomer(id);
     return noContent().build();
   }

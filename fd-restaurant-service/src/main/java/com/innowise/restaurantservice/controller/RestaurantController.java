@@ -1,14 +1,13 @@
 package com.innowise.restaurantservice.controller;
 
-import static java.text.MessageFormat.format;
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.restaurantservice.dto.RestaurantDto;
 import com.innowise.restaurantservice.model.Restaurant;
 import com.innowise.restaurantservice.service.RestaurantService;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -46,11 +45,10 @@ public class RestaurantController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> createRestaurant(
+  public ResponseEntity<Restaurant> createRestaurant(
       @RequestBody RestaurantDto restaurantDto) {
     Restaurant restaurant = restaurantService.createRestaurant(restaurantDto);
-    String location = format("/customer/{0}", restaurant.getId());
-    return created(URI.create(location)).build();
+    return status(CREATED.value()).body(restaurant);
   }
 
   @PutMapping("/{id}")

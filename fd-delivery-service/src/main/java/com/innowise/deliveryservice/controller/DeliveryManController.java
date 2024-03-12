@@ -1,14 +1,13 @@
 package com.innowise.deliveryservice.controller;
 
-import static java.text.MessageFormat.format;
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.deliveryservice.dto.DeliveryManDto;
 import com.innowise.deliveryservice.model.DeliveryMan;
 import com.innowise.deliveryservice.service.DeliveryManService;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -31,32 +30,30 @@ public class DeliveryManController {
 
   @GetMapping("/{id}")
   public ResponseEntity<DeliveryManDto> getDeliveryMan(@PathVariable Long id) {
-    DeliveryManDto DeliveryManDto = deliveryManService.getDeliveryMan(id);
-    return ok(DeliveryManDto);
+    DeliveryManDto deliveryManDto = deliveryManService.getDeliveryMan(id);
+    return ok(deliveryManDto);
   }
 
   @GetMapping
   public ResponseEntity<Page<DeliveryManDto>> getDeliveryManList(
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    Page<DeliveryManDto> DeliveryManDtoList = deliveryManService.getDeliveryManList(
+    Page<DeliveryManDto> deliveryManDtoList = deliveryManService.getDeliveryManList(
         pageNumber, pageSize);
-    return ok(DeliveryManDtoList);
+    return ok(deliveryManDtoList);
   }
 
   @PostMapping
-  public ResponseEntity<Void> createDeliveryMan(@RequestBody DeliveryManDto DeliveryManDto) {
-    DeliveryMan deliveryMan = deliveryManService.createDeliveryMan(DeliveryManDto);
-    String location = format("/deliveries/{0}", deliveryMan.getId());
-    URI locationUri = URI.create(location);
-    return created(locationUri).build();
+  public ResponseEntity<DeliveryMan> createDeliveryMan(@RequestBody DeliveryManDto deliveryManDto) {
+    DeliveryMan deliveryMan = deliveryManService.createDeliveryMan(deliveryManDto);
+    return status(CREATED.value()).body(deliveryMan);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateDeliveryMan(
       @PathVariable Long id,
-      @RequestBody DeliveryManDto DeliveryManDto) {
-    deliveryManService.updateDeliveryMan(id, DeliveryManDto);
+      @RequestBody DeliveryManDto deliveryManDto) {
+    deliveryManService.updateDeliveryMan(id, deliveryManDto);
     return noContent().build();
   }
 

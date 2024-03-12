@@ -1,14 +1,13 @@
 package com.innowise.restaurantservice.controller;
 
-import static java.text.MessageFormat.format;
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.restaurantservice.dto.ProductDto;
 import com.innowise.restaurantservice.model.Product;
 import com.innowise.restaurantservice.service.ProductService;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -48,12 +47,11 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> createProduct(
+  public ResponseEntity<Product> createProduct(
       @PathVariable Long restaurantId,
       @RequestBody ProductDto productDto) {
     Product product = productService.createProduct(restaurantId, productDto);
-    String location = format("/products/{0}", product.getId());
-    return created(URI.create(location)).build();
+    return status(CREATED.value()).body(product);
   }
 
   @PutMapping("/{id}")

@@ -1,14 +1,12 @@
 package com.innowise.orderservice.controller;
 
-import static java.text.MessageFormat.format;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.*;
-import static org.springframework.http.ResponseEntity.created;
 
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -46,10 +44,9 @@ public class OrderController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
+  public ResponseEntity<Order> createOrder(@RequestBody OrderDto orderDto) {
     Order order = orderService.createOrder(orderDto);
-    String location = format("/orders/{0}", order.getId());
-    return created(URI.create(location)).build();
+    return status(CREATED.value()).body(order);
   }
 
   @PutMapping("/{id}")
