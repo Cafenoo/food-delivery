@@ -10,6 +10,7 @@ import com.innowise.restaurantservice.model.Product;
 import com.innowise.restaurantservice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +40,8 @@ public class ProductController {
   @GetMapping
   public ResponseEntity<Page<ProductDto>> getProductList(
       @PathVariable Long restaurantId,
-      @RequestParam Integer pageNumber,
-      @RequestParam Integer pageSize) {
-    Page<ProductDto> productDtoList =
-        productService.getProductList(restaurantId, pageNumber, pageSize);
+      @RequestParam Pageable pageable) {
+    Page<ProductDto> productDtoList = productService.getProductList(restaurantId, pageable);
     return ok(productDtoList);
   }
 

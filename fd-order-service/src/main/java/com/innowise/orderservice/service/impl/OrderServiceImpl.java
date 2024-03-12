@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,16 +30,13 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public Page<OrderDto> getOrderList(
-      OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
-
-    PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+  public Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable) {
 
     Page<Order> orderDtoPage;
     if (Objects.nonNull(orderStatus)) {
-      orderDtoPage = orderRepository.findAllByOrderStatus(orderStatus, pageRequest);
+      orderDtoPage = orderRepository.findAllByOrderStatus(orderStatus, pageable);
     } else {
-      orderDtoPage = orderRepository.findAll(pageRequest);
+      orderDtoPage = orderRepository.findAll(pageable);
     }
 
     return orderDtoPage.map(orderMapper::toDto);

@@ -8,7 +8,7 @@ import com.innowise.restaurantservice.service.RestaurantService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +22,15 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   @Transactional(readOnly = true)
   public RestaurantDto getRestaurant(Long id) {
-    Restaurant restaurant = restaurantRepository
-        .findById(id)
+    Restaurant restaurant = restaurantRepository.findById(id)
         .orElseThrow(EntityNotFoundException::new);
     return restaurantMapper.toDto(restaurant);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Page<RestaurantDto> getRestaurantList(Integer pageNumber, Integer pageSize) {
-    return restaurantRepository
-        .findAll(PageRequest.of(pageNumber, pageSize))
+  public Page<RestaurantDto> getRestaurantList(Pageable pageable) {
+    return restaurantRepository.findAll(pageable)
         .map(restaurantMapper::toDto);
   }
 

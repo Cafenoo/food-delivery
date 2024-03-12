@@ -10,6 +10,7 @@ import com.innowise.deliveryservice.model.DeliveryMan;
 import com.innowise.deliveryservice.service.DeliveryManService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,15 +37,14 @@ public class DeliveryManController {
 
   @GetMapping
   public ResponseEntity<Page<DeliveryManDto>> getDeliveryManList(
-      @RequestParam Integer pageNumber,
-      @RequestParam Integer pageSize) {
-    Page<DeliveryManDto> deliveryManDtoList = deliveryManService.getDeliveryManList(
-        pageNumber, pageSize);
+      @RequestParam Pageable pageable) {
+    Page<DeliveryManDto> deliveryManDtoList = deliveryManService.getDeliveryManList(pageable);
     return ok(deliveryManDtoList);
   }
 
   @PostMapping
-  public ResponseEntity<DeliveryMan> createDeliveryMan(@RequestBody DeliveryManDto deliveryManDto) {
+  public ResponseEntity<DeliveryMan> createDeliveryMan(
+      @RequestBody DeliveryManDto deliveryManDto) {
     DeliveryMan deliveryMan = deliveryManService.createDeliveryMan(deliveryManDto);
     return status(CREATED.value()).body(deliveryMan);
   }

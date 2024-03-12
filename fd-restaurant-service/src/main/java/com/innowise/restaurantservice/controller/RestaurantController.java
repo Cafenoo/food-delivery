@@ -10,6 +10,7 @@ import com.innowise.restaurantservice.model.Restaurant;
 import com.innowise.restaurantservice.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +38,9 @@ public class RestaurantController {
 
   @GetMapping
   public ResponseEntity<Page<RestaurantDto>> getRestaurantList(
-      @RequestParam Integer pageNumber,
-      @RequestParam Integer pageSize) {
+      @RequestParam Pageable pageable) {
     Page<RestaurantDto> restaurantDtoList =
-        restaurantService.getRestaurantList(pageNumber, pageSize);
+        restaurantService.getRestaurantList(pageable);
     return ok(restaurantDtoList);
   }
 

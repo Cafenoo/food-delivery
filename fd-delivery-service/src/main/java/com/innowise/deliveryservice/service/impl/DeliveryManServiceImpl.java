@@ -8,7 +8,7 @@ import com.innowise.deliveryservice.service.DeliveryManService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +30,9 @@ public class DeliveryManServiceImpl implements DeliveryManService {
 
   @Override
   @Transactional(readOnly = true)
-  public Page<DeliveryManDto> getDeliveryManList(Integer pageNumber, Integer pageSize) {
+  public Page<DeliveryManDto> getDeliveryManList(Pageable pageable) {
     return deliveryManRepository
-        .findAll(PageRequest.of(pageNumber, pageSize))
+        .findAll(pageable)
         .map(deliveryManMapper::toDto);
   }
 

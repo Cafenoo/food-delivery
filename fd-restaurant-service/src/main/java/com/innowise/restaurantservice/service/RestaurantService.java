@@ -3,12 +3,13 @@ package com.innowise.restaurantservice.service;
 import com.innowise.restaurantservice.dto.RestaurantDto;
 import com.innowise.restaurantservice.model.Restaurant;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RestaurantService {
 
   RestaurantDto getRestaurant(Long id);
 
-  Page<RestaurantDto> getRestaurantList(Integer pageNumber, Integer pageSize);
+  Page<RestaurantDto> getRestaurantList(Pageable pageable);
 
   Restaurant createRestaurant(RestaurantDto restaurantDto);
 

@@ -3,12 +3,13 @@ package com.innowise.deliveryservice.service;
 import com.innowise.deliveryservice.dto.DeliveryManDto;
 import com.innowise.deliveryservice.model.DeliveryMan;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface DeliveryManService {
 
   DeliveryManDto getDeliveryMan(Long id);
 
-  Page<DeliveryManDto> getDeliveryManList(Integer pageNumber, Integer pageSize);
+  Page<DeliveryManDto> getDeliveryManList(Pageable pageable);
 
   DeliveryMan createDeliveryMan(DeliveryManDto deliveryManDto);
 

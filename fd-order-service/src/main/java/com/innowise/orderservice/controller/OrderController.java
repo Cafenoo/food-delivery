@@ -9,6 +9,7 @@ import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,9 +38,8 @@ public class OrderController {
   @GetMapping
   public ResponseEntity<Page<OrderDto>> getOrderList(
       @RequestParam(required = false) OrderStatus orderStatus,
-      @RequestParam Integer pageNumber,
-      @RequestParam Integer pageSize) {
-    Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageNumber, pageSize);
+      @RequestParam Pageable pageable) {
+    Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageable);
     return ok(orderDtoList);
   }
 
