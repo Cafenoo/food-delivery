@@ -19,4 +19,10 @@ public class Order {
   private List<OrderProduct> orderProductList;
   
   private OrderStatus orderStatus;
+
+  private Long customerId;
+
+  private Long restaurantId;
+
+  private Long deliveryManId;
 }

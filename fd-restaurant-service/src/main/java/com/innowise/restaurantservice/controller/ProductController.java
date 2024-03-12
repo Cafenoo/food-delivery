@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/restaurants/{restaurantId}/products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 

@@ -12,6 +12,15 @@ public interface OrderService {
 
   Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable);
 
+  Page<OrderDto> getOrderListByCustomerId(
+      Long customerId, OrderStatus orderStatus, Pageable pageable);
+
+  Page<OrderDto> getOrderListByRestaurantId(
+      Long restaurantId, OrderStatus orderStatus, Pageable pageable);
+
+  Page<OrderDto> getOrderListByDeliveryManId(
+      Long deliveryManId, OrderStatus orderStatus, Pageable pageable);
+
   Order createOrder(OrderDto orderDto);
 
   void updateOrder(String id, OrderDto orderDto);

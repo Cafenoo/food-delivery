@@ -1,7 +1,9 @@
 package com.innowise.orderservice.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.Order;

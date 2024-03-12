@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/deliveries")
+@RequestMapping("/api/deliverymen")
 @RequiredArgsConstructor
 public class DeliveryManController {
 
