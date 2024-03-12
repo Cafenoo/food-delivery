@@ -19,15 +19,10 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   @Transactional(readOnly = true)
-  public Customer getCustomer(Long id) {
-    return customerRepository.findById(id)
+  public CustomerDto getCustomer(Long id) {
+    Customer customer = customerRepository.findById(id)
         .orElseThrow(EntityNotFoundException::new);
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public CustomerDto getCustomerDto(Long id) {
-    return customerMapper.toDto(getCustomer(id));
+    return customerMapper.toDto(customer);
   }
 
   @Override

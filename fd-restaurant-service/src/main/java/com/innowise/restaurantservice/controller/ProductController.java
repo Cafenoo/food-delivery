@@ -9,8 +9,8 @@ import com.innowise.restaurantservice.dto.ProductDto;
 import com.innowise.restaurantservice.model.Product;
 import com.innowise.restaurantservice.service.ProductService;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,17 +33,17 @@ public class ProductController {
   public ResponseEntity<ProductDto> getProduct(
       @PathVariable Long restaurantId,
       @PathVariable Long id) {
-    ProductDto product = productService.getProductDto(restaurantId, id);
+    ProductDto product = productService.getProduct(restaurantId, id);
     return ok(product);
   }
 
   @GetMapping
-  public ResponseEntity<List<ProductDto>> getProductList(
+  public ResponseEntity<Page<ProductDto>> getProductList(
       @PathVariable Long restaurantId,
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    List<ProductDto> productDtoList =
-        productService.getProductDtoList(restaurantId, pageNumber, pageSize);
+    Page<ProductDto> productDtoList =
+        productService.getProductList(restaurantId, pageNumber, pageSize);
     return ok(productDtoList);
   }
 

@@ -2,17 +2,13 @@ package com.innowise.deliveryservice.service;
 
 import com.innowise.deliveryservice.dto.DeliveryManDto;
 import com.innowise.deliveryservice.model.DeliveryMan;
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface DeliveryManService {
 
-  DeliveryMan getDeliveryMan(Long id);
+  DeliveryManDto getDeliveryMan(Long id);
 
-  DeliveryManDto getDeliveryManDto(Long id);
-
-  List<DeliveryMan> getDeliveryManList(Integer pageNumber, Integer pageSize);
-
-  List<DeliveryManDto> getDeliveryManDtoList(Integer pageNumber, Integer pageSize);
+  Page<DeliveryManDto> getDeliveryManList(Integer pageNumber, Integer pageSize);
 
   DeliveryMan createDeliveryMan(DeliveryManDto deliveryManDto);
 

@@ -29,7 +29,7 @@ public class CustomerController {
 
   @GetMapping("/{id}")
   public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long id) {
-    CustomerDto customerDto = customerService.getCustomerDto(id);
+    CustomerDto customerDto = customerService.getCustomer(id);
     return ok(customerDto);
   }
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-  List<OrderDto> getOrderDtoList(
+  List<OrderDto> getOrderList(
       Long customerId,
       OrderStatus orderStatus,
       Integer pageNumber,

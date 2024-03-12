@@ -2,17 +2,13 @@ package com.innowise.restaurantservice.service;
 
 import com.innowise.restaurantservice.dto.RestaurantDto;
 import com.innowise.restaurantservice.model.Restaurant;
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface RestaurantService {
 
-  Restaurant getRestaurant(Long id);
+  RestaurantDto getRestaurant(Long id);
 
-  RestaurantDto getRestaurantDto(Long id);
-
-  List<Restaurant> getRestaurantList(Integer pageNumber, Integer pageSize);
-
-  List<RestaurantDto> getRestaurantDtoList(Integer pageNumber, Integer pageSize);
+  Page<RestaurantDto> getRestaurantList(Integer pageNumber, Integer pageSize);
 
   Restaurant createRestaurant(RestaurantDto restaurantDto);
 

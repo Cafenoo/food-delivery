@@ -6,9 +6,8 @@ import com.innowise.restaurantservice.model.Restaurant;
 import com.innowise.restaurantservice.repository.RestaurantRepository;
 import com.innowise.restaurantservice.service.RestaurantService;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,30 +21,19 @@ public class RestaurantServiceImpl implements RestaurantService {
 
   @Override
   @Transactional(readOnly = true)
-  public Restaurant getRestaurant(Long id) {
-    return restaurantRepository.findById(id)
+  public RestaurantDto getRestaurant(Long id) {
+    Restaurant restaurant = restaurantRepository
+        .findById(id)
         .orElseThrow(EntityNotFoundException::new);
+    return restaurantMapper.toDto(restaurant);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public RestaurantDto getRestaurantDto(Long id) {
-    return restaurantMapper.toDto(getRestaurant(id));
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<Restaurant> getRestaurantList(Integer pageNumber, Integer pageSize) {
-    return restaurantRepository.findAll(PageRequest.of(pageNumber, pageSize))
-        .getContent();
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<RestaurantDto> getRestaurantDtoList(Integer pageNumber, Integer pageSize) {
-    return getRestaurantList(pageNumber, pageSize).stream()
-        .map(restaurantMapper::toDto)
-        .collect(Collectors.toList());
+  public Page<RestaurantDto> getRestaurantList(Integer pageNumber, Integer pageSize) {
+    return restaurantRepository
+        .findAll(PageRequest.of(pageNumber, pageSize))
+        .map(restaurantMapper::toDto);
   }
 
   @Override

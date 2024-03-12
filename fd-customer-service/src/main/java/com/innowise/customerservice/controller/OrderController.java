@@ -31,8 +31,8 @@ public class OrderController {
       @RequestParam(required = false) OrderStatus orderStatus,
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    List<OrderDto> orderDtoList =
-        orderService.getOrderDtoList(customerId, orderStatus, pageNumber, pageSize);
+    List<OrderDto> orderDtoList = orderService.getOrderList(
+        customerId, orderStatus, pageNumber, pageSize);
     return ok(orderDtoList);
   }
 

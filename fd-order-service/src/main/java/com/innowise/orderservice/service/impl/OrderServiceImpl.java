@@ -8,11 +8,10 @@ import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.repository.OrderRepository;
 import com.innowise.orderservice.service.OrderService;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,34 +23,26 @@ public class OrderServiceImpl implements OrderService {
   private final OrderMapper orderMapper;
 
   @Override
-  public Order getOrder(String id) {
-    return orderRepository.findById(id)
+  public OrderDto getOrder(String id) {
+    Order order = orderRepository.findById(id)
         .orElseThrow(NoSuchElementException::new);
+    return orderMapper.toDto(order);
   }
 
   @Override
-  public OrderDto getOrderDto(String id) {
-    return orderMapper.toDto(getOrder(id));
-  }
+  public Page<OrderDto> getOrderList(
+      OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
 
-  @Override
-  public List<Order> getOrderList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
     PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
+    Page<Order> orderDtoPage;
     if (Objects.nonNull(orderStatus)) {
-      return orderRepository.findAllByOrderStatus(orderStatus, pageRequest)
-          .getContent();
+      orderDtoPage = orderRepository.findAllByOrderStatus(orderStatus, pageRequest);
+    } else {
+      orderDtoPage = orderRepository.findAll(pageRequest);
     }
 
-    return orderRepository.findAll(pageRequest)
-        .getContent();
-  }
-
-  @Override
-  public List<OrderDto> getOrderDtoList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
-    return getOrderList(orderStatus, pageNumber, pageSize).stream()
-        .map(orderMapper::toDto)
-        .collect(Collectors.toList());
+    return orderDtoPage.map(orderMapper::toDto);
   }
 
   @Override
@@ -78,9 +69,9 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public void updateOrderStatus(String id, OrderStatus orderStatus) {
-    Order order = getOrder(id);
-    order.setOrderStatus(orderStatus);
-    orderRepository.save(order);
+  public void updateOrderStatus(String id, OrderStatus orderStatus) { // todo fix
+//    Order order = getOrder(id);
+//    order.setOrderStatus(orderStatus);
+//    orderRepository.save(order);
   }
 }

@@ -9,8 +9,8 @@ import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +32,16 @@ public class OrderController {
 
   @GetMapping("/{id}")
   public ResponseEntity<OrderDto> getOrder(@PathVariable String id) {
-    OrderDto orderDto = orderService.getOrderDto(id);
+    OrderDto orderDto = orderService.getOrder(id);
     return ok(orderDto);
   }
 
   @GetMapping
-  public ResponseEntity<List<OrderDto>> getOrderList(
+  public ResponseEntity<Page<OrderDto>> getOrderList(
       @RequestParam(required = false) OrderStatus orderStatus,
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    List<OrderDto> orderDtoList = orderService.getOrderDtoList(orderStatus, pageNumber, pageSize);
+    Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageNumber, pageSize);
     return ok(orderDtoList);
   }
 

@@ -9,8 +9,8 @@ import com.innowise.restaurantservice.dto.RestaurantDto;
 import com.innowise.restaurantservice.model.Restaurant;
 import com.innowise.restaurantservice.service.RestaurantService;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +32,16 @@ public class RestaurantController {
   @GetMapping("/{id}")
   public ResponseEntity<RestaurantDto> getRestaurant(
       @PathVariable Long id) {
-    RestaurantDto restaurantDto = restaurantService.getRestaurantDto(id);
+    RestaurantDto restaurantDto = restaurantService.getRestaurant(id);
     return ok(restaurantDto);
   }
 
   @GetMapping
-  public ResponseEntity<List<RestaurantDto>> getRestaurantList(
+  public ResponseEntity<Page<RestaurantDto>> getRestaurantList(
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    List<RestaurantDto> restaurantDtoList =
-        restaurantService.getRestaurantDtoList(pageNumber, pageSize);
+    Page<RestaurantDto> restaurantDtoList =
+        restaurantService.getRestaurantList(pageNumber, pageSize);
     return ok(restaurantDtoList);
   }
 

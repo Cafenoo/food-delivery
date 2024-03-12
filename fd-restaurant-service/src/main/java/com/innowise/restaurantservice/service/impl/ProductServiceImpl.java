@@ -8,9 +8,8 @@ import com.innowise.restaurantservice.repository.ProductRepository;
 import com.innowise.restaurantservice.service.ProductService;
 import com.innowise.restaurantservice.service.RestaurantService;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,42 +24,31 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional(readOnly = true)
-  public Product getProduct(Long restaurantId, Long id) {
-    return productRepository.findByRestaurantIdAndId(restaurantId, id)
+  public ProductDto getProduct(Long restaurantId, Long id) {
+    Product product = productRepository
+        .findByRestaurantIdAndId(restaurantId, id)
         .orElseThrow(EntityNotFoundException::new);
+    return productMapper.toDto(product);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public ProductDto getProductDto(Long restaurantId, Long id) {
-    return productMapper.toDto(getProduct(restaurantId, id));
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<Product> getProductList(Long restaurantId, Integer pageNumber, Integer pageSize) {
-    return productRepository.findAllByRestaurantId(restaurantId, PageRequest.of(pageNumber, pageSize))
-        .getContent();
-  }
-
-  @Override
-  @Transactional(readOnly = true)
-  public List<ProductDto> getProductDtoList(
-      Long restaurantId, Integer pageNumber, Integer pageSize) {
-    return getProductList(restaurantId, pageNumber, pageSize).stream()
-        .map(productMapper::toDto)
-        .collect(Collectors.toList());
+  public Page<ProductDto> getProductList(Long restaurantId, Integer pageNumber, Integer pageSize) {
+    return productRepository
+        .findAllByRestaurantId(restaurantId, PageRequest.of(pageNumber, pageSize))
+        .map(productMapper::toDto);
   }
 
   @Override
   @Transactional
-  public Product createProduct(Long restaurantId, ProductDto productDto) {
-    Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
-    Product product = productMapper.toEntity(productDto);
-
-    product.setRestaurant(restaurant);
-
-    return productRepository.save(product);
+  public Product createProduct(Long restaurantId, ProductDto productDto) { // todo fix
+//    Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
+//    Product product = productMapper.toEntity(productDto);
+//
+//    product.setRestaurant(restaurant);
+//
+//    return productRepository.save(product);
+    return null;
   }
 
   @Override

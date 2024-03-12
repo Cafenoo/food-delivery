@@ -5,9 +5,7 @@ import com.innowise.customerservice.model.Customer;
 
 public interface CustomerService {
 
-  Customer getCustomer(Long id);
-
-  CustomerDto getCustomerDto(Long id);
+  CustomerDto getCustomer(Long id);
 
   Customer createCustomer(CustomerDto customerDto);
 

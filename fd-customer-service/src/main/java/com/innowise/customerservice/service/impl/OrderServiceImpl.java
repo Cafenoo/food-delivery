@@ -3,17 +3,16 @@ package com.innowise.customerservice.service.impl;
 import com.innowise.customerservice.dto.OrderDto;
 import com.innowise.customerservice.model.OrderStatus;
 import com.innowise.customerservice.service.OrderService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
   @Override
-  public List<OrderDto> getOrderDtoList(
+  public List<OrderDto> getOrderList(
       Long customerId,
       OrderStatus orderStatus,
       Integer pageNumber,

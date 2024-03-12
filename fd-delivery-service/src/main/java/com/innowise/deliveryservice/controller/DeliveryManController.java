@@ -9,8 +9,8 @@ import com.innowise.deliveryservice.dto.DeliveryManDto;
 import com.innowise.deliveryservice.model.DeliveryMan;
 import com.innowise.deliveryservice.service.DeliveryManService;
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +31,16 @@ public class DeliveryManController {
 
   @GetMapping("/{id}")
   public ResponseEntity<DeliveryManDto> getDeliveryMan(@PathVariable Long id) {
-    DeliveryManDto DeliveryManDto = deliveryManService.getDeliveryManDto(id);
+    DeliveryManDto DeliveryManDto = deliveryManService.getDeliveryMan(id);
     return ok(DeliveryManDto);
   }
 
   @GetMapping
-  public ResponseEntity<List<DeliveryManDto>> getDeliveryManList(
+  public ResponseEntity<Page<DeliveryManDto>> getDeliveryManList(
       @RequestParam Integer pageNumber,
       @RequestParam Integer pageSize) {
-    List<DeliveryManDto> DeliveryManDtoList =
-        deliveryManService.getDeliveryManDtoList(pageNumber, pageSize);
+    Page<DeliveryManDto> DeliveryManDtoList = deliveryManService.getDeliveryManList(
+        pageNumber, pageSize);
     return ok(DeliveryManDtoList);
   }
 
