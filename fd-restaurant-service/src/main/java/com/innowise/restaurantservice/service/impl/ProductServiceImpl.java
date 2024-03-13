@@ -1,5 +1,7 @@
 package com.innowise.restaurantservice.service.impl;
 
+import static java.util.Objects.nonNull;
+
 import com.innowise.restaurantservice.dto.ProductDto;
 import com.innowise.restaurantservice.mapper.ProductMapper;
 import com.innowise.restaurantservice.model.Product;
@@ -20,12 +22,13 @@ public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
   private final ProductMapper productMapper;
+
   private final RestaurantService restaurantService;
 
   @Override
   @Transactional(readOnly = true)
-  public ProductDto getProduct(Long restaurantId, Long id) {
-    Product product = productRepository.findByRestaurantIdAndId(restaurantId, id)
+  public ProductDto getProduct(Long id) {
+    Product product = productRepository.findById(id)
         .orElseThrow(EntityNotFoundException::new);
     return productMapper.toDto(product);
   }
@@ -33,41 +36,58 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional(readOnly = true)
   public Page<ProductDto> getProductList(Long restaurantId, Pageable pageable) {
-    return productRepository.findAllByRestaurantId(restaurantId, pageable)
+    if (nonNull(restaurantId)) {
+      return productRepository.findAllByRestaurantId(restaurantId, pageable)
+          .map(productMapper::toDto);
+    }
+
+    return productRepository.findAll(pageable)
         .map(productMapper::toDto);
   }
 
   @Override
   @Transactional
-  public Product createProduct(Long restaurantId, ProductDto productDto) { // todo fix
-//    Restaurant restaurant = restaurantService.getRestaurant(restaurantId);
-//    Product product = productMapper.toEntity(productDto);
-//
-//    product.setRestaurant(restaurant);
-//
-//    return productRepository.save(product);
-    return null;
+  public Product createProduct(Long restaurantId, ProductDto productDto) {
+    if (restaurantService.notExistsById(restaurantId)) {
+      throw new EntityNotFoundException();
+    }
+
+    Product product = productMapper.toEntity(productDto);
+
+    Restaurant restaurant = new Restaurant();
+    restaurant.setId(restaurantId);
+    product.setRestaurant(restaurant);
+
+    return productRepository.save(product);
   }
 
   @Override
   @Transactional
-  public void updateProduct(Long restaurantId, Long id, ProductDto productDto) {
-    getProduct(restaurantId, id);
-    Product convertedProduct = productMapper.toEntity(productDto);
+  public void updateProduct(Long id, ProductDto productDto) {
+    Product fetchedProduct = productRepository.findById(id)
+        .orElseThrow(EntityNotFoundException::new);
 
+    Product convertedProduct = productMapper.toEntity(productDto);
     convertedProduct.setId(id);
 
-    Restaurant restaurant = new Restaurant();
-    restaurant.setId(restaurantId);
-    convertedProduct.setRestaurant(restaurant);
+    convertedProduct.setRestaurant(fetchedProduct.getRestaurant());
 
     productRepository.save(convertedProduct);
   }
 
   @Override
   @Transactional
-  public void deleteProduct(Long restaurantId, Long id) {
-    getProduct(restaurantId, id);
+  public void deleteProduct(Long id) {
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
+
     productRepository.deleteById(id);
+  }
+
+  @Override
+  public boolean existsById(Long id) {
+    return productRepository.findById(id)
+        .isPresent();
   }
 }

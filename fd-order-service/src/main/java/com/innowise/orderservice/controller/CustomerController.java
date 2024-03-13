@@ -1,7 +1,10 @@
 package com.innowise.orderservice.controller;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.OrderStatus;
+import com.innowise.orderservice.repository.OrderCustomRepositoryImpl.SelectedId;
 import com.innowise.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -25,11 +28,11 @@ public class CustomerController {
   @GetMapping("/{customerId}")
   @PageableAsQueryParam
   public ResponseEntity<Page<OrderDto>> getOrderList(
-      @PathVariable Long customerId,
+      @PathVariable String customerId,
       @RequestParam(required = false) OrderStatus orderStatus,
       @PageableDefault(sort = "id") Pageable pageable) {
-    Page<OrderDto> orderList = orderService.getOrderListByCustomerId(
-        customerId, orderStatus, pageable);
-    return ResponseEntity.ok(orderList);
+    Page<OrderDto> orderList = orderService.getOrderListBySelectedId(
+        orderStatus, pageable, SelectedId.CUSTOMER, customerId);
+    return ok(orderList);
   }
 }

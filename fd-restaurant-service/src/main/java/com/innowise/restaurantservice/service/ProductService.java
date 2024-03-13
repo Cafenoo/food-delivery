@@ -7,13 +7,19 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-  ProductDto getProduct(Long restaurantId, Long id);
+  ProductDto getProduct(Long id);
 
   Page<ProductDto> getProductList(Long restaurantId, Pageable pageable);
 
   Product createProduct(Long restaurantId, ProductDto productDto);
 
-  void updateProduct(Long restaurantId, Long id, ProductDto productDto);
+  void updateProduct(Long id, ProductDto productDto);
 
-  void deleteProduct(Long restaurantId, Long id);
+  void deleteProduct(Long id);
+
+  boolean existsById(Long id);
+
+  default boolean notExistsById(Long id) {
+    return !existsById(id);
+  }
 }

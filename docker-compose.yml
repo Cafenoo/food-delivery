@@ -26,20 +26,6 @@ services:
       - customer-service-database
       - discovery-service
 
-  customer-service-database:
-    container_name: "customer-service-database"
-    image: postgres:14
-    ports:
-      - "5001:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "customer-service"
-    volumes:
-      - customer-service-database:/var/lib/postgresql/data
-
   restaurant-service:
     container_name: "restaurant-service"
     build: "./fd-restaurant-service"
@@ -56,20 +42,6 @@ services:
       - restaurant-service-database
       - discovery-service
 
-  restaurant-service-database:
-    container_name: "restaurant-service-database"
-    image: postgres:14
-    ports:
-      - "5002:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "restaurant-service"
-    volumes:
-      - restaurant-service-database:/var/lib/postgresql/data
-
   delivery-service:
     container_name: "delivery-service"
     build: "./fd-delivery-service"
@@ -85,20 +57,6 @@ services:
     depends_on:
       - delivery-service-database
       - discovery-service
-
-  delivery-service-database:
-    container_name: "delivery-service-database"
-    image: postgres:14
-    ports:
-      - "5003:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "delivery-service"
-    volumes:
-      - delivery-service-database:/var/lib/postgresql/data
 
   order-service:
     container_name: "order-service"
@@ -118,6 +76,48 @@ services:
     depends_on:
       - order-service-database
       - discovery-service
+
+  customer-service-database:
+    container_name: "customer-service-database"
+    image: postgres:14
+    ports:
+      - "5001:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "customer-service"
+    volumes:
+      - customer-service-database:/var/lib/postgresql/data
+
+  restaurant-service-database:
+    container_name: "restaurant-service-database"
+    image: postgres:14
+    ports:
+      - "5002:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "restaurant-service"
+    volumes:
+      - restaurant-service-database:/var/lib/postgresql/data
+
+  delivery-service-database:
+    container_name: "delivery-service-database"
+    image: postgres:14
+    ports:
+      - "5003:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "delivery-service"
+    volumes:
+      - delivery-service-database:/var/lib/postgresql/data
 
   order-service-database:
     container_name: "order-service-database"

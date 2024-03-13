@@ -21,54 +21,51 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/restaurants/{restaurantId}/products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 
   private final ProductService productService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductDto> getProduct(
-      @PathVariable Long restaurantId,
-      @PathVariable Long id) {
-    ProductDto product = productService.getProduct(restaurantId, id);
+  public ResponseEntity<ProductDto> getProduct(@PathVariable Long id) {
+    ProductDto product = productService.getProduct(id);
     return ok(product);
   }
 
   @GetMapping
   @PageableAsQueryParam
   public ResponseEntity<Page<ProductDto>> getProductList(
-      @PathVariable Long restaurantId,
+      @RequestParam(required = false) Long restaurantId,
       @PageableDefault(sort = "id") Pageable pageable) {
-    Page<ProductDto> productDtoList = productService.getProductList(restaurantId, pageable);
-    return ok(productDtoList);
+    Page<ProductDto> productList = productService.getProductList(
+        restaurantId, pageable);
+    return ok(productList);
   }
 
   @PostMapping
   public ResponseEntity<Product> createProduct(
-      @PathVariable Long restaurantId,
-      @RequestBody ProductDto productDto) {
+      @RequestBody ProductDto productDto,
+      @RequestParam Long restaurantId) {
     Product product = productService.createProduct(restaurantId, productDto);
     return status(CREATED.value()).body(product);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateProduct(
-      @PathVariable Long restaurantId,
       @PathVariable Long id,
       @RequestBody ProductDto productDto) {
-    productService.updateProduct(restaurantId, id, productDto);
+    productService.updateProduct(id, productDto);
     return noContent().build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteProduct(
-      @PathVariable Long restaurantId,
-      @PathVariable Long id) {
-    productService.deleteProduct(restaurantId, id);
+  public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    productService.deleteProduct(id);
     return noContent().build();
   }
 }
