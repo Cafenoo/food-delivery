@@ -10,8 +10,10 @@ import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +40,10 @@ public class OrderController {
   }
 
   @GetMapping
+  @PageableAsQueryParam
   public ResponseEntity<Page<OrderDto>> getOrderList(
       @RequestParam(required = false) OrderStatus orderStatus,
-      @RequestParam Pageable pageable) {
+      @PageableDefault(sort = "id") Pageable pageable) {
     Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageable);
     return ok(orderDtoList);
   }

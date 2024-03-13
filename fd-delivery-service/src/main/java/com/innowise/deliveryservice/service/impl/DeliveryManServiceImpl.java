@@ -22,8 +22,7 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional(readOnly = true)
   public DeliveryManDto getDeliveryMan(Long id) {
-    DeliveryMan deliveryMan = deliveryManRepository
-        .findById(id)
+    DeliveryMan deliveryMan = deliveryManRepository.findById(id)
         .orElseThrow(EntityNotFoundException::new);
     return deliveryManMapper.toDto(deliveryMan);
   }
@@ -31,8 +30,7 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional(readOnly = true)
   public Page<DeliveryManDto> getDeliveryManList(Pageable pageable) {
-    return deliveryManRepository
-        .findAll(pageable)
+    return deliveryManRepository.findAll(pageable)
         .map(deliveryManMapper::toDto);
   }
 
@@ -46,9 +44,11 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional
   public void updateDeliveryMan(Long id, DeliveryManDto deliveryManDto) {
-    getDeliveryMan(id);
-    DeliveryMan convertedDeliveryMan = deliveryManMapper.toEntity(deliveryManDto);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
 
+    DeliveryMan convertedDeliveryMan = deliveryManMapper.toEntity(deliveryManDto);
     convertedDeliveryMan.setId(id);
 
     deliveryManRepository.save(convertedDeliveryMan);
@@ -57,7 +57,17 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional
   public void deleteDeliveryMan(Long id) {
-    getDeliveryMan(id);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
+
     deliveryManRepository.deleteById(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsById(Long id) {
+    return deliveryManRepository.findById(id)
+        .isPresent();
   }
 }

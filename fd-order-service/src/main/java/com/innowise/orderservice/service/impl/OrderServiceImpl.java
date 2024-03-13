@@ -4,12 +4,12 @@ import static com.innowise.orderservice.model.OrderStatus.PENDING;
 import static java.util.Objects.nonNull;
 
 import com.innowise.orderservice.dto.OrderDto;
+import com.innowise.orderservice.exception.RecordNotFoundException;
 import com.innowise.orderservice.mapper.OrderMapper;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.repository.OrderRepository;
 import com.innowise.orderservice.service.OrderService;
-import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public OrderDto getOrder(String id) {
     Order order = orderRepository.findById(id)
-        .orElseThrow(NoSuchElementException::new);
+        .orElseThrow(RecordNotFoundException::new);
     return orderMapper.toDto(order);
   }
 
@@ -75,9 +75,11 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void updateOrder(String id, OrderDto orderDto) {
-    getOrder(id);
-    Order convertedOrder = orderMapper.toEntity(orderDto);
+    if (!orderRepository.existsById(id)) {
+      throw new RecordNotFoundException();
+    }
 
+    Order convertedOrder = orderMapper.toEntity(orderDto);
     convertedOrder.setId(id);
 
     orderRepository.save(convertedOrder);
@@ -85,7 +87,10 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void deleteOrder(String id) {
-    getOrder(id);
+    if (!orderRepository.existsById(id)) {
+      throw new RecordNotFoundException();
+    }
+
     orderRepository.deleteById(id);
   }
 
@@ -95,4 +100,5 @@ public class OrderServiceImpl implements OrderService {
 //    order.setOrderStatus(orderStatus);
 //    orderRepository.save(order);
   }
+
 }

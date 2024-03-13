@@ -9,8 +9,10 @@ import com.innowise.deliveryservice.dto.DeliveryManDto;
 import com.innowise.deliveryservice.model.DeliveryMan;
 import com.innowise.deliveryservice.service.DeliveryManService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,8 +37,9 @@ public class DeliveryManController {
   }
 
   @GetMapping
+  @PageableAsQueryParam
   public ResponseEntity<Page<DeliveryManDto>> getDeliveryManList(
-      @RequestParam Pageable pageable) {
+      @PageableDefault(sort = "id") Pageable pageable) {
     Page<DeliveryManDto> deliveryManDtoList = deliveryManService.getDeliveryManList(pageable);
     return ok(deliveryManDtoList);
   }

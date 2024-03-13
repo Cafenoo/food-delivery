@@ -4,8 +4,10 @@ import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +23,11 @@ public class CustomerController {
   private final OrderService orderService;
 
   @GetMapping("/{customerId}")
+  @PageableAsQueryParam
   public ResponseEntity<Page<OrderDto>> getOrderList(
       @PathVariable Long customerId,
       @RequestParam(required = false) OrderStatus orderStatus,
-      @RequestParam Pageable pageable) {
+      @PageableDefault(sort = "id") Pageable pageable) {
     Page<OrderDto> orderList = orderService.getOrderListByCustomerId(
         customerId, orderStatus, pageable);
     return ResponseEntity.ok(orderList);

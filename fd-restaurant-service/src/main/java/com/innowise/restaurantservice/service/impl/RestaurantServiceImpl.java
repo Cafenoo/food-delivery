@@ -44,9 +44,11 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   @Transactional
   public void updateRestaurant(Long id, RestaurantDto restaurantDto) {
-    getRestaurant(id);
-    Restaurant convertedRestaurant = restaurantMapper.toEntity(restaurantDto);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
 
+    Restaurant convertedRestaurant = restaurantMapper.toEntity(restaurantDto);
     convertedRestaurant.setId(id);
 
     restaurantRepository.save(convertedRestaurant);
@@ -55,7 +57,17 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   @Transactional
   public void deleteRestaurant(Long id) {
-    getRestaurant(id);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
+
     restaurantRepository.deleteById(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsById(Long id) {
+    return restaurantRepository.findById(id)
+        .isPresent();
   }
 }

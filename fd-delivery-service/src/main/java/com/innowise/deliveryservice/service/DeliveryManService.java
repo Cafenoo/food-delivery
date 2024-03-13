@@ -16,4 +16,10 @@ public interface DeliveryManService {
   void updateDeliveryMan(Long id, DeliveryManDto deliveryManDto);
 
   void deleteDeliveryMan(Long id);
+
+  boolean existsById(Long id);
+
+  default boolean notExistsById(Long id) {
+    return !existsById(id);
+  }
 }

@@ -35,9 +35,11 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional
   public void updateCustomer(Long id, CustomerDto customerDto) {
-    getCustomer(id);
-    Customer convertedCustomer = customerMapper.toEntity(customerDto);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
 
+    Customer convertedCustomer = customerMapper.toEntity(customerDto);
     convertedCustomer.setId(id);
 
     customerRepository.save(convertedCustomer);
@@ -46,7 +48,17 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional
   public void deleteCustomer(Long id) {
-    getCustomer(id);
+    if (notExistsById(id)) {
+      throw new EntityNotFoundException();
+    }
+
     customerRepository.deleteById(id);
+  }
+
+  @Override
+  @Transactional(readOnly = true)
+  public boolean existsById(Long id) {
+    return customerRepository.findById(id)
+        .isPresent();
   }
 }

@@ -12,4 +12,10 @@ public interface CustomerService {
   void updateCustomer(Long id, CustomerDto customerDto);
 
   void deleteCustomer(Long id);
+
+  boolean existsById(Long id);
+
+  default boolean notExistsById(Long id) {
+    return !existsById(id);
+  }
 }

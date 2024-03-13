@@ -16,4 +16,10 @@ public interface RestaurantService {
   void updateRestaurant(Long id, RestaurantDto restaurantDto);
 
   void deleteRestaurant(Long id);
+
+  boolean existsById(Long id);
+
+  default boolean notExistsById(Long id) {
+    return !existsById(id);
+  }
 }
