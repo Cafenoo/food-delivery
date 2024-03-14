@@ -1,10 +1,10 @@
-package com.innowise.deliveryservice.service.impl;
+package com.innowise.deliverymanservice.service.impl;
 
-import com.innowise.deliveryservice.dto.DeliveryManDto;
-import com.innowise.deliveryservice.mapper.DeliveryManMapper;
-import com.innowise.deliveryservice.model.DeliveryMan;
-import com.innowise.deliveryservice.repository.DeliveryManRepository;
-import com.innowise.deliveryservice.service.DeliveryManService;
+import com.innowise.deliverymanservice.dto.DeliveryManDto;
+import com.innowise.deliverymanservice.mapper.DeliveryManMapper;
+import com.innowise.deliverymanservice.model.DeliveryMan;
+import com.innowise.deliverymanservice.repository.DeliveryManRepository;
+import com.innowise.deliverymanservice.service.DeliveryManService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

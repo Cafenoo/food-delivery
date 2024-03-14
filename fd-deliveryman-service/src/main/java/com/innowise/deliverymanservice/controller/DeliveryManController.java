@@ -1,13 +1,13 @@
-package com.innowise.deliveryservice.controller;
+package com.innowise.deliverymanservice.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
-import com.innowise.deliveryservice.dto.DeliveryManDto;
-import com.innowise.deliveryservice.model.DeliveryMan;
-import com.innowise.deliveryservice.service.DeliveryManService;
+import com.innowise.deliverymanservice.dto.DeliveryManDto;
+import com.innowise.deliverymanservice.model.DeliveryMan;
+import com.innowise.deliverymanservice.service.DeliveryManService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;

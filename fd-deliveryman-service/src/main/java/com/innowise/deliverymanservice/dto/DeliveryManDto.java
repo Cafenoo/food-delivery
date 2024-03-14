@@ -1,4 +1,4 @@
-package com.innowise.deliveryservice.dto;
+package com.innowise.deliverymanservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeliveryManDto {
 
-  private String address;
+  private String name;
 }

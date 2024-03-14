@@ -1,7 +1,7 @@
-package com.innowise.deliveryservice.service;
+package com.innowise.deliverymanservice.service;
 
-import com.innowise.deliveryservice.dto.DeliveryManDto;
-import com.innowise.deliveryservice.model.DeliveryMan;
+import com.innowise.deliverymanservice.dto.DeliveryManDto;
+import com.innowise.deliverymanservice.model.DeliveryMan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

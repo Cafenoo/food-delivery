@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: "delivery-service"
+    name: "deliveryman-service"
   jpa:
     generate-ddl: true
     hibernate:
@@ -19,4 +19,4 @@ spring:
   datasource:
     username: postgres
     password: postgres
-    url: "jdbc:postgresql://localhost:5003/delivery-service"
+    url: "jdbc:postgresql://localhost:5003/deliveryman-service"

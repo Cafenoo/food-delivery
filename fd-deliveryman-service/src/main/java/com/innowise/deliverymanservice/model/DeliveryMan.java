@@ -1,4 +1,4 @@
-package com.innowise.deliveryservice.model;
+package com.innowise.deliverymanservice.model;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -23,5 +23,5 @@ public class DeliveryMan {
   private Long id;
 
   @Column
-  private String address;
+  private String name;
 }
