@@ -44,7 +44,7 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional
   public void updateDeliveryMan(Long id, DeliveryManDto deliveryManDto) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 
@@ -57,7 +57,7 @@ public class DeliveryManServiceImpl implements DeliveryManService {
   @Override
   @Transactional
   public void deleteDeliveryMan(Long id) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 

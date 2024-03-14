@@ -48,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional
   public Product createProduct(Long restaurantId, ProductDto productDto) {
-    if (restaurantService.notExistsById(restaurantId)) {
+    if (!restaurantService.existsById(restaurantId)) {
       throw new EntityNotFoundException();
     }
 
@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional
   public void deleteProduct(Long id) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 
@@ -86,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public boolean existsById(Long id) {
     return productRepository.findById(id)
         .isPresent();

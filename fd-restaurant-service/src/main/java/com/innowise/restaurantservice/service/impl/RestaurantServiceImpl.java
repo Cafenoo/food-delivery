@@ -44,7 +44,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   @Transactional
   public void updateRestaurant(Long id, RestaurantDto restaurantDto) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 
@@ -57,7 +57,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   @Transactional
   public void deleteRestaurant(Long id) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 

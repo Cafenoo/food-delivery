@@ -14,8 +14,4 @@ public interface CustomerService {
   void deleteCustomer(Long id);
 
   boolean existsById(Long id);
-
-  default boolean notExistsById(Long id) {
-    return !existsById(id);
-  }
 }

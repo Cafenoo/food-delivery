@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional
   public void updateCustomer(Long id, CustomerDto customerDto) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 
@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   @Transactional
   public void deleteCustomer(Long id) {
-    if (notExistsById(id)) {
+    if (!existsById(id)) {
       throw new EntityNotFoundException();
     }
 
