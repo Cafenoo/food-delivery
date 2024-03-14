@@ -3,17 +3,16 @@ package com.innowise.orderservice.service.impl;
 import static com.innowise.orderservice.model.OrderStatus.PENDING;
 
 import com.innowise.orderservice.dto.OrderDto;
+import com.innowise.orderservice.exception.RecordNotFoundException;
 import com.innowise.orderservice.mapper.OrderMapper;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
+import com.innowise.orderservice.repository.OrderCustomRepositoryImpl.SelectedId;
 import com.innowise.orderservice.repository.OrderRepository;
 import com.innowise.orderservice.service.OrderService;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,35 +23,25 @@ public class OrderServiceImpl implements OrderService {
   private final OrderMapper orderMapper;
 
   @Override
-  public Order getOrder(String id) {
-    return orderRepository.findById(id)
-        .orElseThrow(NoSuchElementException::new);
+  public OrderDto getOrder(String id) {
+    Order order = orderRepository.findById(id)
+        .orElseThrow(RecordNotFoundException::new);
+    return orderMapper.toDto(order);
   }
 
   @Override
-  public OrderDto getOrderDto(String id) {
-    return orderMapper.toDto(getOrder(id));
+  public Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable) {
+    return getOrderListBySelectedId(orderStatus, pageable, null, null);
   }
 
   @Override
-  public List<Order> getOrderList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
-    PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-
-    if (Objects.nonNull(orderStatus)) {
-      return orderRepository.findAllByOrderStatus(orderStatus, pageRequest)
-          .getContent();
-    }
-
-    return orderRepository.findAll(pageRequest)
-        .getContent();
+  public Page<OrderDto> getOrderListBySelectedId(OrderStatus orderStatus, Pageable pageable,
+      SelectedId selectedId, String id) {
+    Page<Order> orderPage = orderRepository.findAllByOrderStatus(
+        orderStatus, pageable, selectedId, id);
+    return orderPage.map(orderMapper::toDto);
   }
 
-  @Override
-  public List<OrderDto> getOrderDtoList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize) {
-    return getOrderList(orderStatus, pageNumber, pageSize).stream()
-        .map(orderMapper::toDto)
-        .collect(Collectors.toList());
-  }
 
   @Override
   public Order createOrder(OrderDto orderDto) {
@@ -63,9 +52,11 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void updateOrder(String id, OrderDto orderDto) {
-    getOrder(id);
-    Order convertedOrder = orderMapper.toEntity(orderDto);
+    if (!orderRepository.existsById(id)) {
+      throw new RecordNotFoundException();
+    }
 
+    Order convertedOrder = orderMapper.toEntity(orderDto);
     convertedOrder.setId(id);
 
     orderRepository.save(convertedOrder);
@@ -73,13 +64,17 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public void deleteOrder(String id) {
-    getOrder(id);
+    if (!orderRepository.existsById(id)) {
+      throw new RecordNotFoundException();
+    }
+
     orderRepository.deleteById(id);
   }
 
   @Override
   public void updateOrderStatus(String id, OrderStatus orderStatus) {
-    Order order = getOrder(id);
+    Order order = orderRepository.findById(id)
+        .orElseThrow(RecordNotFoundException::new);
     order.setOrderStatus(orderStatus);
     orderRepository.save(order);
   }

@@ -1,4 +1,4 @@
-package com.innowise.deliveryservice;
+package com.innowise.deliverymanservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

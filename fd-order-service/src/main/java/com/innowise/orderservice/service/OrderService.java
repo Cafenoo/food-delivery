@@ -3,17 +3,21 @@ package com.innowise.orderservice.service;
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
-import java.util.List;
+import com.innowise.orderservice.repository.OrderCustomRepositoryImpl.SelectedId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
-  Order getOrder(String id);
+  OrderDto getOrder(String id);
 
-  OrderDto getOrderDto(String id);
+  Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable);
 
-  List<Order> getOrderList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize);
-
-  List<OrderDto> getOrderDtoList(OrderStatus orderStatus, Integer pageNumber, Integer pageSize);
+  Page<OrderDto> getOrderListBySelectedId(
+      OrderStatus orderStatus,
+      Pageable pageable,
+      SelectedId selectedId,
+      String id);
 
   Order createOrder(OrderDto orderDto);
 

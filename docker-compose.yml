@@ -55,20 +55,6 @@ services:
       - discovery-service
       - gateway-service
 
-  customer-service-database:
-    container_name: "customer-service-database"
-    image: postgres:14
-    ports:
-      - "5001:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "customer-service"
-    volumes:
-      - customer-service-database:/var/lib/postgresql/data
-
   restaurant-service:
     container_name: "restaurant-service"
     build: "./fd-restaurant-service"
@@ -88,23 +74,9 @@ services:
       - discovery-service
       - gateway-service
 
-  restaurant-service-database:
-    container_name: "restaurant-service-database"
-    image: postgres:14
-    ports:
-      - "5002:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "restaurant-service"
-    volumes:
-      - restaurant-service-database:/var/lib/postgresql/data
-
-  delivery-service:
-    container_name: "delivery-service"
-    build: "./fd-delivery-service"
+  deliveryman-service:
+    container_name: "deliveryman-service"
+    build: "./fd-deliveryman-service"
     ports:
       - "8003:8003"
     networks:
@@ -112,7 +84,7 @@ services:
     environment:
       CONFIG_SERVER_URI: "http://config-service:7999"
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://delivery-service-database:5432/delivery-service"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://deliveryman-service-database:5432/deliveryman-service"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres"
     depends_on:
@@ -120,20 +92,6 @@ services:
       - config-service
       - discovery-service
       - gateway-service
-
-  delivery-service-database:
-    container_name: "delivery-service-database"
-    image: postgres:14
-    ports:
-      - "5003:5432"
-    networks:
-      - "food-delivery"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "delivery-service"
-    volumes:
-      - delivery-service-database:/var/lib/postgresql/data
 
   order-service:
     container_name: "order-service"
@@ -157,6 +115,48 @@ services:
       - discovery-service
       - gateway-service
 
+  customer-service-database:
+    container_name: "customer-service-database"
+    image: postgres:14
+    ports:
+      - "5001:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "customer-service"
+    volumes:
+      - customer-service-database:/var/lib/postgresql/data
+
+  restaurant-service-database:
+    container_name: "restaurant-service-database"
+    image: postgres:14
+    ports:
+      - "5002:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "restaurant-service"
+    volumes:
+      - restaurant-service-database:/var/lib/postgresql/data
+
+  delivery-service-database:
+    container_name: "deliveryman-service-database"
+    image: postgres:14
+    ports:
+      - "5003:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "deliveryman-service"
+    volumes:
+      - deliveryman-service-database:/var/lib/postgresql/data
+
   order-service-database:
     container_name: "order-service-database"
     image: mongo:7.0.5
@@ -179,5 +179,5 @@ networks:
 volumes:
   customer-service-database:
   restaurant-service-database:
-  delivery-service-database:
+  deliveryman-service-database:
   order-service-database:

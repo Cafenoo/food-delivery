@@ -1,16 +1,19 @@
 package com.innowise.orderservice.controller;
 
-import static java.text.MessageFormat.format;
-import static org.springframework.http.ResponseEntity.*;
-import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.ResponseEntity.noContent;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
 import com.innowise.orderservice.service.OrderService;
-import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,24 +35,23 @@ public class OrderController {
 
   @GetMapping("/{id}")
   public ResponseEntity<OrderDto> getOrder(@PathVariable String id) {
-    OrderDto orderDto = orderService.getOrderDto(id);
+    OrderDto orderDto = orderService.getOrder(id);
     return ok(orderDto);
   }
 
   @GetMapping
-  public ResponseEntity<List<OrderDto>> getOrderList(
+  @PageableAsQueryParam
+  public ResponseEntity<Page<OrderDto>> getOrderList(
       @RequestParam(required = false) OrderStatus orderStatus,
-      @RequestParam Integer pageNumber,
-      @RequestParam Integer pageSize) {
-    List<OrderDto> orderDtoList = orderService.getOrderDtoList(orderStatus, pageNumber, pageSize);
+      @PageableDefault(sort = "id") Pageable pageable) {
+    Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageable);
     return ok(orderDtoList);
   }
 
   @PostMapping
-  public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
+  public ResponseEntity<Order> createOrder(@RequestBody OrderDto orderDto) {
     Order order = orderService.createOrder(orderDto);
-    String location = format("/orders/{0}", order.getId());
-    return created(URI.create(location)).build();
+    return status(CREATED.value()).body(order);
   }
 
   @PutMapping("/{id}")

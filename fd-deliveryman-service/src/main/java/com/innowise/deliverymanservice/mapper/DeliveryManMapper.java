@@ -1,7 +1,7 @@
-package com.innowise.deliveryservice.mapper;
+package com.innowise.deliverymanservice.mapper;
 
-import com.innowise.deliveryservice.dto.DeliveryManDto;
-import com.innowise.deliveryservice.model.DeliveryMan;
+import com.innowise.deliverymanservice.dto.DeliveryManDto;
+import com.innowise.deliverymanservice.model.DeliveryMan;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

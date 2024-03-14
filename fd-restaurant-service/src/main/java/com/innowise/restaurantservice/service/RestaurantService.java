@@ -2,21 +2,20 @@ package com.innowise.restaurantservice.service;
 
 import com.innowise.restaurantservice.dto.RestaurantDto;
 import com.innowise.restaurantservice.model.Restaurant;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RestaurantService {
 
-  Restaurant getRestaurant(Long id);
+  RestaurantDto getRestaurant(Long id);
 
-  RestaurantDto getRestaurantDto(Long id);
-
-  List<Restaurant> getRestaurantList(Integer pageNumber, Integer pageSize);
-
-  List<RestaurantDto> getRestaurantDtoList(Integer pageNumber, Integer pageSize);
+  Page<RestaurantDto> getRestaurantList(Pageable pageable);
 
   Restaurant createRestaurant(RestaurantDto restaurantDto);
 
   void updateRestaurant(Long id, RestaurantDto restaurantDto);
 
   void deleteRestaurant(Long id);
+
+  boolean existsById(Long id);
 }

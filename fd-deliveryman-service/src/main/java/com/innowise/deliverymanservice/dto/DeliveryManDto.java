@@ -1,4 +1,4 @@
-package com.innowise.customerservice.dto;
+package com.innowise.deliverymanservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderProductDto {
+public class DeliveryManDto {
 
-  private Long productId;
-  
-  private Integer count;
+  private String name;
 }

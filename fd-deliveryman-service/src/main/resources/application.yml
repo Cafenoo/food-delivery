@@ -4,7 +4,7 @@ config:
 
 spring:
   application:
-    name: delivery-service
+    name: deliveryman-service
   config:
     import: configserver:${config.server.uri}
   cloud:

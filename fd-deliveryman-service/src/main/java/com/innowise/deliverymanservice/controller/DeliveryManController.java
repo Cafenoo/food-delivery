@@ -1,13 +1,13 @@
-package com.innowise.restaurantservice.controller;
+package com.innowise.deliverymanservice.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
-import com.innowise.restaurantservice.dto.RestaurantDto;
-import com.innowise.restaurantservice.model.Restaurant;
-import com.innowise.restaurantservice.service.RestaurantService;
+import com.innowise.deliverymanservice.dto.DeliveryManDto;
+import com.innowise.deliverymanservice.model.DeliveryMan;
+import com.innowise.deliverymanservice.service.DeliveryManService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
@@ -24,47 +24,44 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/restaurants")
+@RequestMapping("/api/deliverymen")
 @RequiredArgsConstructor
-public class RestaurantController {
+public class DeliveryManController {
 
-  private final RestaurantService restaurantService;
+  private final DeliveryManService deliveryManService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<RestaurantDto> getRestaurant(
-      @PathVariable Long id) {
-    RestaurantDto restaurantDto = restaurantService.getRestaurant(id);
-    return ok(restaurantDto);
+  public ResponseEntity<DeliveryManDto> getDeliveryMan(@PathVariable Long id) {
+    DeliveryManDto deliveryManDto = deliveryManService.getDeliveryMan(id);
+    return ok(deliveryManDto);
   }
 
   @GetMapping
   @PageableAsQueryParam
-  public ResponseEntity<Page<RestaurantDto>> getRestaurantList(
+  public ResponseEntity<Page<DeliveryManDto>> getDeliveryManList(
       @PageableDefault(sort = "id") Pageable pageable) {
-    Page<RestaurantDto> restaurantDtoList =
-        restaurantService.getRestaurantList(pageable);
-    return ok(restaurantDtoList);
+    Page<DeliveryManDto> deliveryManDtoList = deliveryManService.getDeliveryManList(pageable);
+    return ok(deliveryManDtoList);
   }
 
   @PostMapping
-  public ResponseEntity<Restaurant> createRestaurant(
-      @RequestBody RestaurantDto restaurantDto) {
-    Restaurant restaurant = restaurantService.createRestaurant(restaurantDto);
-    return status(CREATED.value()).body(restaurant);
+  public ResponseEntity<DeliveryMan> createDeliveryMan(
+      @RequestBody DeliveryManDto deliveryManDto) {
+    DeliveryMan deliveryMan = deliveryManService.createDeliveryMan(deliveryManDto);
+    return status(CREATED.value()).body(deliveryMan);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Void> updateRestaurant(
+  public ResponseEntity<Void> updateDeliveryMan(
       @PathVariable Long id,
-      @RequestBody RestaurantDto restaurantDto) {
-    restaurantService.updateRestaurant(id, restaurantDto);
+      @RequestBody DeliveryManDto deliveryManDto) {
+    deliveryManService.updateDeliveryMan(id, deliveryManDto);
     return noContent().build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteRestaurant(
-      @PathVariable Long id) {
-    restaurantService.deleteRestaurant(id);
+  public ResponseEntity<Void> deleteDeliveryMan(@PathVariable Long id) {
+    deliveryManService.deleteDeliveryMan(id);
     return noContent().build();
   }
 }
