@@ -8,6 +8,7 @@ import static org.springframework.http.ResponseEntity.status;
 import com.innowise.orderservice.dto.OrderDto;
 import com.innowise.orderservice.model.Order;
 import com.innowise.orderservice.model.OrderStatus;
+import com.innowise.orderservice.repository.OrderCustomRepositoryImpl.SelectedId;
 import com.innowise.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.converters.models.PageableAsQueryParam;
@@ -43,8 +44,11 @@ public class OrderController {
   @PageableAsQueryParam
   public ResponseEntity<Page<OrderDto>> getOrderList(
       @RequestParam(required = false) OrderStatus orderStatus,
+      @RequestParam(required = false) SelectedId selectedId,
+      @RequestParam(required = false) Long id,
       @PageableDefault(sort = "id") Pageable pageable) {
-    Page<OrderDto> orderDtoList = orderService.getOrderList(orderStatus, pageable);
+    Page<OrderDto> orderDtoList = orderService.getOrderList(
+        orderStatus, pageable, selectedId, id);
     return ok(orderDtoList);
   }
 

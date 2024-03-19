@@ -1,6 +1,7 @@
 package com.innowise.restaurantservice.service.impl;
 
-import static java.util.Objects.nonNull;
+import static com.innowise.restaurantservice.specification.ProductSpecification.hasRestaurantId;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 import com.innowise.restaurantservice.dto.ProductDto;
 import com.innowise.restaurantservice.mapper.ProductMapper;
@@ -36,12 +37,8 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional(readOnly = true)
   public Page<ProductDto> getProductList(Long restaurantId, Pageable pageable) {
-    if (nonNull(restaurantId)) {
-      return productRepository.findAllByRestaurantId(restaurantId, pageable)
-          .map(productMapper::toDto);
-    }
-
-    return productRepository.findAll(pageable)
+    return productRepository
+        .findAll(where(hasRestaurantId(restaurantId)), pageable)
         .map(productMapper::toDto);
   }
 

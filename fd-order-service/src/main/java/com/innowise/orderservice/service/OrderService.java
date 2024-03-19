@@ -11,13 +11,11 @@ public interface OrderService {
 
   OrderDto getOrder(String id);
 
-  Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable);
-
-  Page<OrderDto> getOrderListBySelectedId(
+  Page<OrderDto> getOrderList(
       OrderStatus orderStatus,
       Pageable pageable,
       SelectedId selectedId,
-      String id);
+      Long id);
 
   Order createOrder(OrderDto orderDto);
 

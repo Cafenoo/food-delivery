@@ -19,19 +19,25 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class OrderCustomRepositoryImpl implements OrderCustomRepository {
 
+  private static final String ORDER_STATUS_FIELD = "orderStatus";
+
   private final MongoTemplate mongoTemplate;
 
   @Override
-  public Page<Order> findAllByOrderStatus(
-      OrderStatus orderStatus, Pageable pageable, SelectedId selectedId, String id) {
+  public Page<Order> findAll(
+      OrderStatus orderStatus,
+      Pageable pageable,
+      SelectedId selectedId,
+      Long id) {
+
     Query query = new Query();
 
     if (nonNull(selectedId)) {
-      query.addCriteria(where(selectedId.getSelector()).is(id));
+      query.addCriteria(where(selectedId.getIdField()).is(id));
     }
 
     if (nonNull(orderStatus)) {
-      query.addCriteria(where("orderStatus").is(orderStatus));
+      query.addCriteria(where(ORDER_STATUS_FIELD).is(orderStatus));
     }
 
     query.with(pageable);
@@ -50,6 +56,6 @@ public class OrderCustomRepositoryImpl implements OrderCustomRepository {
     RESTAURANT("restaurantId"),
     DELIVERY_MAN("deliveryManId");
 
-    private final String selector;
+    private final String idField;
   }
 }

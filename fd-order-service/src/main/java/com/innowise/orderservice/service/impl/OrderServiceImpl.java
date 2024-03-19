@@ -30,18 +30,14 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public Page<OrderDto> getOrderList(OrderStatus orderStatus, Pageable pageable) {
-    return getOrderListBySelectedId(orderStatus, pageable, null, null);
+  public Page<OrderDto> getOrderList(
+      OrderStatus orderStatus,
+      Pageable pageable,
+      SelectedId selectedId,
+      Long id) {
+    return orderRepository.findAll(orderStatus, pageable, selectedId, id)
+        .map(orderMapper::toDto);
   }
-
-  @Override
-  public Page<OrderDto> getOrderListBySelectedId(OrderStatus orderStatus, Pageable pageable,
-      SelectedId selectedId, String id) {
-    Page<Order> orderPage = orderRepository.findAllByOrderStatus(
-        orderStatus, pageable, selectedId, id);
-    return orderPage.map(orderMapper::toDto);
-  }
-
 
   @Override
   public Order createOrder(OrderDto orderDto) {

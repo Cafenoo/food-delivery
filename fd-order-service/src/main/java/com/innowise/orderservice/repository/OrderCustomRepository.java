@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface OrderCustomRepository {
 
-  Page<Order> findAllByOrderStatus(
-      OrderStatus orderStatus, Pageable pageable, SelectedId selectedId, String id);
+  Page<Order> findAll(
+      OrderStatus orderStatus,
+      Pageable pageable,
+      SelectedId selectedId,
+      Long id);
 }
