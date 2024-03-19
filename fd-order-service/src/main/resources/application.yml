@@ -1,0 +1,30 @@
+server:
+  port: 8004
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8000/eureka
+
+spring:
+  application:
+    name: "order-service"
+  data:
+    mongodb:
+      username: "admin"
+      password: "root"
+      host: "localhost"
+      port: 5004
+      database: "order-service"
+      authentication-database: "admin"
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG

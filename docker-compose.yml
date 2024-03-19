@@ -1,0 +1,145 @@
+version: "3"
+
+services:
+
+  discovery-service:
+    container_name: "discovery-service"
+    build: "./fd-discovery-service"
+    ports:
+      - "8000:8000"
+    networks:
+      - food-delivery
+
+  customer-service:
+    container_name: "customer-service"
+    build: "./fd-customer-service"
+    ports:
+      - "8001:8001"
+    networks:
+      - "food-delivery"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://customer-service-database:5432/customer-service"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "postgres"
+    depends_on:
+      - customer-service-database
+      - discovery-service
+
+  restaurant-service:
+    container_name: "restaurant-service"
+    build: "./fd-restaurant-service"
+    ports:
+      - "8002:8002"
+    networks:
+      - "food-delivery"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://restaurant-service-database:5432/restaurant-service"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "postgres"
+    depends_on:
+      - restaurant-service-database
+      - discovery-service
+
+  deliveryman-service:
+    container_name: "deliveryman-service"
+    build: "./fd-deliveryman-service"
+    ports:
+      - "8003:8003"
+    networks:
+      - "food-delivery"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://deliveryman-service-database:5432/deliveryman-service"
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "postgres"
+    depends_on:
+      - delivery-service-database
+      - discovery-service
+
+  order-service:
+    container_name: "order-service"
+    build: "./fd-order-service"
+    ports:
+      - "8004:8004"
+    networks:
+      - "food-delivery"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://discovery-service:8000/eureka"
+      SPRING_DATA_MONGODB_USERNAME: "admin"
+      SPRING_DATA_MONGODB_PASSWORD: "root"
+      SPRING_DATA_MONGODB_HOST: "order-service-database"
+      SPRING_DATA_MONGODB_PORT: "27017"
+      SPRING_DATA_MONGODB_DATABASE: "order-service"
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: "admin"
+    depends_on:
+      - order-service-database
+      - discovery-service
+
+  customer-service-database:
+    container_name: "customer-service-database"
+    image: postgres:14
+    ports:
+      - "5001:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "customer-service"
+    volumes:
+      - customer-service-database:/var/lib/postgresql/data
+
+  restaurant-service-database:
+    container_name: "restaurant-service-database"
+    image: postgres:14
+    ports:
+      - "5002:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "restaurant-service"
+    volumes:
+      - restaurant-service-database:/var/lib/postgresql/data
+
+  delivery-service-database:
+    container_name: "deliveryman-service-database"
+    image: postgres:14
+    ports:
+      - "5003:5432"
+    networks:
+      - "food-delivery"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "deliveryman-service"
+    volumes:
+      - deliveryman-service-database:/var/lib/postgresql/data
+
+  order-service-database:
+    container_name: "order-service-database"
+    image: mongo:7.0.5
+    ports:
+      - "5004:27017"
+    networks:
+      - "food-delivery"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+      MONGO_INITDB_DATABASE: "order-service"
+    volumes:
+      - order-service-database:/data/db
+      - order-service-database:/data/configdb
+
+networks:
+  food-delivery:
+    driver: bridge
+
+volumes:
+  customer-service-database:
+  restaurant-service-database:
+  deliveryman-service-database:
+  order-service-database:
