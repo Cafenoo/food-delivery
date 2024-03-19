@@ -1,4 +1,4 @@
-package com.innowise.deliveryservice.exception;
+package com.innowise.deliverymanservice.exception;
 
 public class GatewayNotProcessedException extends RuntimeException {
 

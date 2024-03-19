@@ -9,7 +9,9 @@ import org.mapstruct.Mapping;
 public interface OrderMapper {
 
   @Mapping(target = "id", ignore = true)
-  @Mapping(target = "orderStatus", ignore = true)
+  @Mapping(target = "customerId", ignore = true)
+  @Mapping(target = "restaurantId", ignore = true)
+  @Mapping(target = "deliveryManId", ignore = true)
   Order toEntity(OrderDto customerDto);
 
   OrderDto toDto(Order customer);

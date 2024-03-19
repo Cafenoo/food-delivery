@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.BAD_GATEWAY;
 import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.status;
 
-import com.innowise.deliveryservice.exception.GatewayNotProcessedException;
+import com.innowise.deliverymanservice.exception.GatewayNotProcessedException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;

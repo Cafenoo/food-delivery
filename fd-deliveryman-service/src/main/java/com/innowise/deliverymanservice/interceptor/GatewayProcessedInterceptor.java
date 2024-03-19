@@ -1,8 +1,8 @@
-package com.innowise.deliveryservice.interceptor;
+package com.innowise.deliverymanservice.interceptor;
 
 import static java.util.Objects.isNull;
 
-import com.innowise.deliveryservice.exception.GatewayNotProcessedException;
+import com.innowise.deliverymanservice.exception.GatewayNotProcessedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;

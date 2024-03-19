@@ -1,4 +1,4 @@
-package com.innowise.deliveryservice.config;
+package com.innowise.deliverymanservice.config;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
